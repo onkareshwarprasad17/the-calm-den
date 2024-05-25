@@ -1,6 +1,8 @@
-import { createPortal } from "react-dom";
+import { cloneElement, createContext, useContext, useState } from "react";
 import { HiXMark } from "react-icons/hi2";
 import styled from "styled-components";
+import { createPortal } from "react-dom";
+import { useOutsideClick } from "../hooks/useOutsideClick";
 
 const StyledModal = styled.div`
   position: fixed;
@@ -50,18 +52,55 @@ const Button = styled.button`
     color: var(--color-grey-500);
   }
 `;
-function Modal({ children, onClose }) {
+
+const ModalContext = createContext();
+
+function Modal({ children }) {
+  /*
+        The reason we are setting the state as a string value and not boolean (true or false) is because
+        --> The value of openName property will allow us to have one Modal component but to open multiple windows inside of it.
+
+        If we pass true or false, then to have multiple windows(i.e. modals), we would have to declare this Modal component all over again
+        This current implementation with the use of openName property will help the Modal to know which window it needs to open
+    */
+  const [openName, setOpenName] = useState("");
+
+  const close = () => setOpenName("");
+  const open = setOpenName;
+
+  return (
+    <ModalContext.Provider value={{ close, open, openName }}>
+      {children}
+    </ModalContext.Provider>
+  );
+}
+
+function Open({ children, opens: modalOpenName }) {
+  const { open } = useContext(ModalContext);
+
+  return cloneElement(children, { onClick: () => open(modalOpenName) });
+}
+
+function Window({ children, name }) {
+  const { close, openName } = useContext(ModalContext);
+  const ref = useOutsideClick(close);
+
+  if (openName !== name) return null;
+
   return createPortal(
     <Overlay>
-      <StyledModal>
-        <Button onClick={onClose}>
+      <StyledModal ref={ref}>
+        <Button onClick={close}>
           <HiXMark />
         </Button>
-        <div>{children}</div>
+        <div>{cloneElement(children, { onCloseModal: close })}</div>
       </StyledModal>
     </Overlay>,
     document.body
   );
 }
+
+Modal.Open = Open;
+Modal.Window = Window;
 
 export default Modal;
