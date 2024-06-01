@@ -13,7 +13,6 @@ function CabinTable() {
   if (isPending) return <Spinner />;
 
   const filterValue = searchParams.get("discount") || "all";
-  const sortByType = searchParams.get("sortBy") || "nameAsc";
 
   // Filter
   let filteredValues;
@@ -26,28 +25,12 @@ function CabinTable() {
   }
 
   // Sort
-  if (sortByType === "nameAsc") {
-    filteredValues = filteredValues.sort((a, b) => a.name - b.name);
-    console.log(filteredValues);
-  }
-  if (sortByType === "nameDesc")
-    filteredValues = filteredValues.sort((a, b) => b.name - a.name);
-  if (sortByType === "priceAsc")
-    filteredValues = filteredValues.sort(
-      (a, b) => a.regularPrice - b.regularPrice
-    );
-  if (sortByType === "priceDesc")
-    filteredValues = filteredValues.sort(
-      (a, b) => b.regularPrice - a.regularPrice
-    );
-  if (sortByType === "capacityAsc")
-    filteredValues = filteredValues.sort(
-      (a, b) => a.maxCapacity - b.maxCapacity
-    );
-  if (sortByType === "capacityDesc")
-    filteredValues = filteredValues.sort(
-      (a, b) => b.maxCapacity - a.maxCapacity
-    );
+  const sortByType = searchParams.get("sortBy") || "name-asc";
+  const [field, direction] = sortByType.split("-");
+  const modifier = direction === "asc" ? 1 : -1;
+  const sortedValues = filteredValues.sort(
+    (a, b) => (a[field] - b[field]) * modifier
+  );
 
   return (
     <Menus>
@@ -61,7 +44,7 @@ function CabinTable() {
         </Table.Header>
 
         <Table.Body
-          data={filteredValues}
+          data={sortedValues}
           render={(cabin) => <CabinRow cabin={cabin} key={cabin.id} />}
         />
       </Table>
