@@ -63,25 +63,3 @@ export async function createEditCabin(newCabin, id) {
   }
   return data;
 }
-
-// export async function editCabin(editedCabin) {
-//   // to update what are needed
-//   /*
-//     need to update the path of the image file in the storage
-//     other values are primitive, hence can be updated easily
-//   */
-
-//   const imagePath = editCabin.
-//   const { data, error } = await supabase
-//     .from("cabins")
-//     .update(editedCabin)
-//     .eq("id", "someValue")
-//     .select();
-
-//   if (error) {
-//     console.error("ERROR: ", error.message);
-//     throw new Error("Cabins could not be loaded");
-//   }
-
-//   return data;
-// }
