@@ -17,10 +17,16 @@ export const useBookings = () => {
   const sortByRawValue = searchParams.get("sortBy") || "startDate-desc";
   const [field, direction] = sortByRawValue.split("-");
   const sortBy = { field, direction };
-  const { data: bookings, isPending } = useQuery({
-    queryKey: ["bookings", filter, sortBy],
-    queryFn: () => getBookings({ filter, sortBy }),
+
+  // PAGINATION
+  const currentPage = !searchParams.get("page")
+    ? 1
+    : Number(searchParams.get("page"));
+
+  const { data: { bookings, count } = {}, isPending } = useQuery({
+    queryKey: ["bookings", filter, sortBy, currentPage],
+    queryFn: () => getBookings({ filter, sortBy, currentPage }),
   });
 
-  return { bookings, isPending };
+  return { bookings, isPending, count };
 };
