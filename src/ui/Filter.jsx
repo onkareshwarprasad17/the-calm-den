@@ -39,8 +39,11 @@ function Filter({ filterField, options }) {
   const [searchParams, setSearchParams] = useSearchParams();
   const currentFilter = searchParams.get(filterField) || options.at(0).value;
 
-  function handleClick(filterOption) {
-    searchParams.set(filterField, filterOption);
+  function handleClick(value) {
+    searchParams.set(filterField, value);
+
+    // Resetting the "page" query params to avoid invalid range field to get the filtered results
+    if (searchParams.get("page")) searchParams.set("page", 1);
     setSearchParams(searchParams);
   }
 
