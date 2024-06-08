@@ -1,6 +1,21 @@
 import { PAGE_SIZE } from "../utils/constants";
 import supabase from "./supabase";
 
+export async function getBooking(id) {
+  const { data, error } = await supabase
+    .from("bookings")
+    .select("*, cabins(*), guests(*)")
+    .eq("id", id)
+    .single(); // to grab the single object in the array
+
+  if (error) {
+    console.error("ERROR: ", error.message);
+    throw new Error(`Booking ${id} could not be loaded`);
+  }
+
+  return data;
+}
+
 export async function getBookings({ filter, sortBy, currentPage }) {
   let query = supabase
     .from("bookings")
@@ -43,4 +58,20 @@ export async function deleteBooking(id) {
     console.error("ERROR: ", error.message);
     throw new Error("Bookings could not be loaded");
   }
+}
+
+export async function updateBooking(id, obj) {
+  const { data, error } = await supabase
+    .from("bookings")
+    .update(obj)
+    .eq("id", id)
+    .select()
+    .single();
+
+  if (error) {
+    console.error("ERROR: ", error.message);
+    throw new Error("Bookings could not be loaded");
+  }
+
+  return data;
 }
