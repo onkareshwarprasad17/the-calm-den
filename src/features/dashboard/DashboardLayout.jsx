@@ -7,6 +7,7 @@ import { useRecentStays } from "./useRecentStays";
 import { useCabins } from "../cabins/useCabins";
 
 import Stats from "./Stats";
+import SalesChart from "./SalesChart";
 
 const StyledDashboardLayout = styled.div`
   display: grid;
@@ -40,7 +41,7 @@ function DashboardLayout() {
       />
       <p>Today's Activity</p>
       <p>Statistics</p>
-      <p>Statistics</p>
+      <SalesChart />
     </StyledDashboardLayout>
   );
 }
