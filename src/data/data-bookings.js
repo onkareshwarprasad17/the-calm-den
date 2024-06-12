@@ -6,7 +6,6 @@ function fromToday(numDays, withTime = false) {
   return date.toISOString().slice(0, -1);
 }
 
-console.log(fromToday(0));
 export const bookings = [
   // CABIN 001
   {
