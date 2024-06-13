@@ -12,6 +12,7 @@ import { eachDayOfInterval, format, isSameDay, subDays } from "date-fns";
 
 import DashboardBox from "./DashboardBox";
 import Heading from "../../ui/Heading";
+import { getToday } from "../../utils/helpers";
 
 const StyledSalesChart = styled(DashboardBox)`
   grid-column: 1 / -1;
@@ -60,7 +61,10 @@ function SalesChart({ bookings, numDays }) {
 
   return (
     <StyledSalesChart>
-      <Heading as="h2">Sales</Heading>
+      <Heading as="h2">
+        Sales from {format(allDates.at(0), "MMM dd yyyy")} &mdash;{" "}
+        {format(getToday(), "MMM dd yyyy")}
+      </Heading>
 
       <ResponsiveContainer height={500} width="100%">
         <AreaChart data={data}>
