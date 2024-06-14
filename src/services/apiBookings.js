@@ -106,3 +106,28 @@ export async function getStaysAfterDate(date) {
 
   return data;
 }
+
+export async function getStaysTodayActivity() {
+  /* 
+  Conditions to check for today's activity
+    status === "unconfirmed" && getToday(new Date(booking.startDate))
+    status === "checked-in" && getToday(new Date(booking.endDate))
+  
+  This would need all the bookings data to be first extracted from the database
+  */
+
+  // alternative (better approach):- Use OR operator
+  const { data, error } = await supabase
+    .from("bookings")
+    .select("*, guests(fullName, countryFlag, nationality)")
+    .or(
+      `and(status.eq.unconfirmed, startDate.eq.${getToday()}), and(status.eq.checked-in, endDate.eq.${getToday()})`
+    );
+
+  if (error) {
+    console.error("ERROR: ", error.message);
+    throw new Error("Bookings could not be loaded");
+  }
+
+  return data;
+}
