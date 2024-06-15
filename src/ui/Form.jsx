@@ -11,6 +11,13 @@ const Form = styled.form`
       border: 1px solid var(--color-grey-100);
       border-radius: var(--border-radius-md);
     `}
+
+  ${(props) =>
+    props.type === "modal" &&
+    css`
+      width: 80rem;
+    `}
+    
   overflow: hidden;
   font-size: 1.4rem;
 `;
