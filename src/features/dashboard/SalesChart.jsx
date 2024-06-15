@@ -13,6 +13,7 @@ import { eachDayOfInterval, format, isSameDay, subDays } from "date-fns";
 import DashboardBox from "./DashboardBox";
 import Heading from "../../ui/Heading";
 import { getToday } from "../../utils/helpers";
+import { useDarkMode } from "../../context/DarkModeContext";
 
 const StyledSalesChart = styled(DashboardBox)`
   grid-column: 1 / -1;
@@ -25,8 +26,7 @@ const StyledSalesChart = styled(DashboardBox)`
 `;
 
 function SalesChart({ bookings, numDays }) {
-  const isDarkMode = false;
-  //   const isDarkMode = true;
+  const { isDarkMode } = useDarkMode();
 
   const allDates = eachDayOfInterval({
     start: subDays(new Date(), numDays - 1),
