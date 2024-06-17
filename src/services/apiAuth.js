@@ -1,5 +1,7 @@
 import supabase from "./supabase";
 
+const DEMO_USER_EMAIL = "demo@thecalmden.com";
+
 export async function login({ email, password }) {
   let { data, error } = await supabase.auth.signInWithPassword({
     email,
@@ -28,6 +30,12 @@ export async function logout() {
 }
 
 export async function signup({ fullName, email, password }) {
+  const user = await getCurrentUser();
+
+  if (user.email === DEMO_USER_EMAIL) {
+    throw new Error("This feature is disabled for demo users!");
+  }
+
   let { data, error } = await supabase.auth.signUp({
     email,
     password,

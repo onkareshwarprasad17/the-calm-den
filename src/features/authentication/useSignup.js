@@ -12,7 +12,7 @@ export function useSignup() {
     },
     onError: (err) => {
       console.error(err.message);
-      toast.error("Error occurred while signing up, error: ", err);
+      toast.error("Error occurred while signing up, error: " + err.message);
     },
   });
 
