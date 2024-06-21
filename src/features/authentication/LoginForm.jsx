@@ -6,9 +6,14 @@ import Input from "../../ui/Input";
 import { useLogin } from "./useLogin";
 import SpinnerMini from "../../ui/SpinnerMini";
 
+const DEMO_USER = {
+  email: process.env.DEMO_USER_EMAIL,
+  password: process.env.DEMO_USER_PASSWORD,
+};
+
 function LoginForm() {
-  const [email, setEmail] = useState("onkareshwar@example.com");
-  const [password, setPassword] = useState("Pass0987");
+  const [email, setEmail] = useState(DEMO_USER.email);
+  const [password, setPassword] = useState(DEMO_USER.password);
   const { login, isPending } = useLogin();
 
   function handleSubmit(e) {
