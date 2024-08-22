@@ -32,3 +32,7 @@ export const getToday = (options = {}) => {
 
   return today.toISOString();
 };
+
+export function isDemoUser(email) {
+  return email === process.env.DEMO_USER_EMAIL;
+}

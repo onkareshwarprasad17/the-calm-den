@@ -1,4 +1,5 @@
 import supabase from "./supabase";
+import { isDemoUser } from "../utils/helpers";
 
 export async function login({ email, password }) {
   let { data, error } = await supabase.auth.signInWithPassword({
@@ -30,7 +31,7 @@ export async function logout() {
 export async function signup({ fullName, email, password }) {
   const user = await getCurrentUser();
 
-  if (user.email === process.env.DEMO_USER_EMAIL) {
+  if (isDemoUser(user.email)) {
     throw new Error("This feature is disabled for demo users!");
   }
 

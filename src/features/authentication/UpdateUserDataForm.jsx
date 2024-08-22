@@ -8,6 +8,7 @@ import Input from "../../ui/Input";
 
 import { useUser } from "./useUser";
 import { useUpdateUser } from "./useUpdateUser";
+import { isDemoUser } from "../../utils/helpers";
 
 function UpdateUserDataForm() {
   // We don't need the loading state, and can immediately use the user data, because we know that it has already been loaded at this point
@@ -22,6 +23,7 @@ function UpdateUserDataForm() {
 
   const [fullName, setFullName] = useState(currentFullName);
   const [avatar, setAvatar] = useState(null);
+  const IS_DEMO_USER = isDemoUser(email);
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -76,7 +78,7 @@ function UpdateUserDataForm() {
         >
           Cancel
         </Button>
-        <Button disabled={isUpdating}>Update account</Button>
+        <Button disabled={IS_DEMO_USER || isUpdating}>Update account</Button>
       </FormRow>
     </Form>
   );

@@ -5,12 +5,19 @@ import FormRow from "../../ui/FormRow";
 import Input from "../../ui/Input";
 
 import { useUpdateUser } from "./useUpdateUser";
+import { isDemoUser } from "../../utils/helpers";
+import { useUser } from "./useUser";
 
 function UpdatePasswordForm() {
   const { register, handleSubmit, formState, getValues, reset } = useForm();
   const { errors } = formState;
 
   const { updateUser, isUpdating } = useUpdateUser();
+  const {
+    user: { email },
+  } = useUser();
+
+  const IS_DEMO_USER = isDemoUser(email);
 
   function onSubmit({ password }) {
     updateUser({ password }, { onSuccess: reset });
@@ -57,7 +64,7 @@ function UpdatePasswordForm() {
         <Button onClick={reset} type="reset" variation="secondary">
           Cancel
         </Button>
-        <Button disabled={isUpdating}>Update password</Button>
+        <Button disabled={IS_DEMO_USER || isUpdating}>Update password</Button>
       </FormRow>
     </Form>
   );
